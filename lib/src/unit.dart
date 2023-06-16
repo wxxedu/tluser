@@ -4,4 +4,4 @@ final class Unit {
 }
 
 /// Represents nothing.
-const unit = Unit;
+const unit = Unit();

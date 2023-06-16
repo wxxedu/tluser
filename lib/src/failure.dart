@@ -43,6 +43,14 @@ extension FailureX on Failure {
       target = target.cause!;
     }
   }
+
+  String get display {
+    if (message == null) {
+      return runtimeType.toString();
+    }
+
+    return "$runtimeType: $message";
+  }
 }
 
 extension ObjectX on Object {

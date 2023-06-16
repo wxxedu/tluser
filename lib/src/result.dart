@@ -52,6 +52,11 @@ sealed class Result<T, F extends Failure> {
 
   /// Converts this [Result] to an [Option].
   Option<T> toOption();
+
+  S fold<S>({
+    required S Function(T value) ok,
+    required S Function(F value) err,
+  });
 }
 
 /// Represents a result that is a success.
@@ -78,6 +83,13 @@ final class Ok<T, F extends Failure> extends Result<T, F> {
 
   @override
   Option<T> toOption() => Some(value);
+
+  @override
+  S fold<S>({
+    required S Function(T value) ok,
+    required S Function(F value) err,
+  }) =>
+      ok(value);
 }
 
 /// Represents a result that is an error.
@@ -109,4 +121,11 @@ final class Err<T, F extends Failure> extends Result<T, F> {
 
   @override
   Option<T> toOption() => const None();
+
+  @override
+  S fold<S>({
+    required S Function(T value) ok,
+    required S Function(F value) err,
+  }) =>
+      err(this.err);
 }
