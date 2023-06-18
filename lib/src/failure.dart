@@ -23,6 +23,16 @@ class _Failure implements Failure {
   });
 }
 
+class AggregationFailure<T extends Failure> implements Failure {
+  @override
+  final List<T> cause;
+
+  const AggregationFailure(this.cause);
+
+  @override
+  String? get message => "Failed to collect $cause";
+}
+
 extension FailureX on Failure {
   void forEach(
     void Function(Object) action, {

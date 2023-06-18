@@ -129,3 +129,18 @@ final class Err<T, F extends Failure> extends Result<T, F> {
   }) =>
       err(this.err);
 }
+
+extension ListResultX<T, F extends Failure> on List<Result<T, F>> {
+  Result<List<T>, AggregationFailure<F>> collect() {
+    final errs = whereType<Err<dynamic, F>>().map((val) => val.err).toList();
+    if (errs.isNotEmpty) {
+      return Err(AggregationFailure(errs));
+    }
+    final res = whereType<Ok<T, dynamic>>().map((val) => val.value).toList();
+    return Ok(res);
+  }
+
+  List<T> collectOk() {
+    return whereType<Ok<T, dynamic>>().map((val) => val.value).toList();
+  }
+}
